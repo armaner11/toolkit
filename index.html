@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Daily Tools Website</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f4; }
+    h1 { text-align: center; }
+    .tool { background: #fff; padding: 15px; margin: 15px; border-radius: 8px; box-shadow: 0 0 5px #aaa; }
+    input, button, select, textarea { margin: 5px; padding: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Daily Life Tools</h1>
+
+  <!-- 1 Calculator -->
+  <div class="tool">
+    <h2>Calculator</h2>
+    <input id="c1" type="number"> <input id="c2" type="number">
+    <button onclick="calc('+')">+</button>
+    <button onclick="calc('-')">-</button>
+    <button onclick="calc('*')">*</button>
+    <button onclick="calc('/')">/</button>
+    <p id="cResult"></p>
+  </div>
+
+  <!-- 2 To-Do List -->
+  <div class="tool">
+    <h2>To-Do List</h2>
+    <input id="todoInput"><button onclick="addTodo()">Add</button>
+    <ul id="todoList"></ul>
+  </div>
+
+  <!-- 3 Notes -->
+  <div class="tool">
+    <h2>Notes Pad</h2>
+    <textarea id="notes" rows="5" cols="40"></textarea>
+  </div>
+
+  <!-- 4 Unit Converter -->
+  <div class="tool">
+    <h2>Unit Converter (cm → inch)</h2>
+    <input id="cm" type="number"><button onclick="convertUnit()">Convert</button>
+    <p id="unitResult"></p>
+  </div>
+
+  <!-- 5 Currency Converter -->
+  <div class="tool">
+    <h2>Currency Converter (INR → USD)</h2>
+    <input id="inr" type="number"><button onclick="convertCurrency()">Convert</button>
+    <p id="currencyResult"></p>
+  </div>
+
+  <!-- 6 Clock -->
+  <div class="tool">
+    <h2>Clock</h2>
+    <p id="clock"></p>
+  </div>
+
+  <!-- 7 Stopwatch -->
+  <div class="tool">
+    <h2>Stopwatch</h2>
+    <p id="stopwatch">0</p>
+    <button onclick="startSW()">Start</button>
+    <button onclick="stopSW()">Stop</button>
+    <button onclick="resetSW()">Reset</button>
+  </div>
+
+  <!-- 8 Calendar -->
+  <div class="tool">
+    <h2>Calendar</h2>
+    <input type="date">
+  </div>
+
+  <!-- 9 BMI Calculator -->
+  <div class="tool">
+    <h2>BMI Calculator</h2>
+    <input id="weight" type="number" placeholder="kg">
+    <input id="height" type="number" placeholder="cm">
+    <button onclick="calcBMI()">Calculate</button>
+    <p id="bmiResult"></p>
+  </div>
+
+  <!-- 10 Password Generator -->
+  <div class="tool">
+    <h2>Password Generator</h2>
+    <button onclick="genPass()">Generate</button>
+    <p id="passResult"></p>
+  </div>
+
+  <!-- 11 Text Encrypt/Decrypt -->
+  <div class="tool">
+    <h2>Encrypt/Decrypt</h2>
+    <input id="textED"><button onclick="encrypt()">Encrypt</button><button onclick="decrypt()">Decrypt</button>
+    <p id="edResult"></p>
+  </div>
+
+  <!-- 12 QR Code Generator (basic text link) -->
+  <div class="tool">
+    <h2>QR Code Generator</h2>
+    <input id="qrText"><button onclick="genQR()">Generate</button>
+    <p><a id="qrLink" target="_blank"></a></p>
+  </div>
+
+  <!-- 13 Dictionary (simple word meaning demo) -->
+  <div class="tool">
+    <h2>Dictionary (Demo)</h2>
+    <input id="dictWord"><button onclick="dict()">Find</button>
+    <p id="dictResult"></p>
+  </div>
+
+  <!-- 14 Drawing Pad -->
+  <div class="tool">
+    <h2>Drawing Pad</h2>
+    <canvas id="canvas" width="200" height="200" style="border:1px solid #000;"></canvas>
+  </div>
+
+  <!-- 15 Expense Tracker -->
+  <div class="tool">
+    <h2>Expense Tracker</h2>
+    <input id="expense" type="number"><button onclick="addExpense()">Add</button>
+    <p id="expenseTotal"></p>
+  </div>
+
+<script>
+  // Calculator
+  function calc(op){let a=+c1.value,b=+c2.value;let r;switch(op){case '+':r=a+b;break;case '-':r=a-b;break;case '*':r=a*b;break;case '/':r=a/b;break;}cResult.innerText="Result: "+r;}
+
+  // To-Do
+  function addTodo(){let li=document.createElement("li");li.innerText=todoInput.value;todoList.appendChild(li);todoInput.value="";}
+
+  // Unit Converter
+  function convertUnit(){unitResult.innerText=(cm.value/2.54).toFixed(2)+" inch";}
+
+  // Currency Converter (fixed rate demo)
+  function convertCurrency(){currencyResult.innerText=(inr.value*0.012).toFixed(2)+" USD";}
+
+  // Clock
+  setInterval(()=>{clock.innerText=new Date().toLocaleTimeString();},1000);
+
+  // Stopwatch
+  let sw=0,timer;function startSW(){timer=setInterval(()=>{sw++;stopwatch.innerText=sw;},1000);}function stopSW(){clearInterval(timer);}function resetSW(){sw=0;stopwatch.innerText=0;}
+
+  // BMI
+  function calcBMI(){let w=+weight.value,h=+height.value/100;let bmi=(w/(h*h)).toFixed(2);bmiResult.innerText="BMI: "+bmi;}
+
+  // Password Generator
+  function genPass(){let chars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";let pass="";for(let i=0;i<8;i++){pass+=chars[Math.floor(Math.random()*chars.length)];}passResult.innerText=pass;}
+
+  // Encrypt/Decrypt
+  function encrypt(){edResult.innerText=btoa(textED.value);}function decrypt(){edResult.innerText=atob(textED.value);}
+
+  // QR Generator (link to Google API)
+  function genQR(){qrLink.href="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+qrText.value;qrLink.innerText="View QR";}
+
+  // Dictionary (demo meanings)
+  function dict(){let word=dictWord.value.toLowerCase();let meanings={hello:"a greeting",world:"the earth"};dictResult.innerText=meanings[word]||"Not found";}
+
+  // Drawing Pad
+  let ctx=canvas.getContext("2d");canvas.addEventListener("mousemove",e=>{if(e.buttons==1){ctx.fillRect(e.offsetX,e.offsetY,2,2);}});
+
+  // Expense Tracker
+  let total=0;function addExpense(){total+=+expense.value;expenseTotal.innerText="Total: "+total;}
+</script>
+</body>
+</html>
